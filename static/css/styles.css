@@ -10,7 +10,7 @@ body{
     background-size:contain;
     background-repeat: no-repeat;
     color:rgb(0, 0, 0);
-    text-shadow: 2px 2px 10px rgb(56, 56, 56);
+   
     font-family: 'Luxurious Roman', cursive;
 }
 
@@ -19,10 +19,12 @@ nav{
     border-bottom:1px solid black;
     min-height:5em;
     box-shadow: 5px 5px 5px black;
-    margin-bottom:5em;    
+    margin-bottom:5em;  
+     
 }
+
 .navbar-brand{
-    font-size: 2em;
+    font-size: 2em;  
 }
 .nav-item{
     text-shadow: none;
