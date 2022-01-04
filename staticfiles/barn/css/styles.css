@@ -1,0 +1,29 @@
+.horse-container{
+    width:100%;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+   
+}
+
+.horse-container a {
+    text-decoration: none;
+    color:inherit;
+}
+
+.horse-container a div{
+    display:flex;
+    flex-direction:column;
+    padding:.75em;
+    border:1px solid black;
+    width:30em;
+    height:30em;
+    margin-top:1.25em;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px black;
+    background-color: rgba(0, 0, 0, 0.219);
+}
+
+.horse-container a div img{
+    border-radius: 5px;
+}
