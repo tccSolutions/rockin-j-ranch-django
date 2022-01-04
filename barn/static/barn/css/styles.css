@@ -25,5 +25,7 @@
 }
 
 .horse-container a div img{
-    border-radius: 5px;
+    border-radius: 5px;   
+    max-height: 50%;
+    object-fit: contain;
 }

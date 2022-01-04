@@ -28,13 +28,11 @@ nav{
 }
 .nav-item{
     text-shadow: none;
-    font-size: 1.25em;
-    transition:all .5s;
+    font-size: 1.25em;    
 }
 
 .nav-item:hover{
-    text-decoration: underline;
-    text-shadow: 5px 2px 5px black;
+    text-decoration: underline;    
     transform: skew(-15deg);
     
 }

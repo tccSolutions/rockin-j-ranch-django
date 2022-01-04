@@ -16,7 +16,9 @@
             <h6>Breed: {{horse.breed}}</h6>
             <h6>Sex: {{horse.sex}}</h6>
             <h6>Age: {{horse.age}}</h6>
-            <h6>Price: ${{horse.price}}0</h6>
+            {% if horse.adoptable == True%}
+                <h6>Price: ${{horse.price}}0</h6>
+            {%endif%}
             <p>Last Updated: {{horse.updated}}</p>
         </div>
 

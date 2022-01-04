@@ -1,3 +1,4 @@
+import os
 import random
 from django.shortcuts import redirect, render
 from .models import Horse, Image
@@ -7,9 +8,9 @@ import cloudinary.uploader
 # Create your views here.
 
 cloudinary.config( 
-  cloud_name = "dmobley0608", 
-  api_key = "172351854381963", 
-  api_secret = "aHccAD-bj6FasCVv_m_xn2BSjxg" 
+  cloud_name = os.getenv("CLOUDINARY_NAME"), 
+  api_key = os.getenv("CLOUDINARY_API_KEY"), 
+  api_secret = os.getenv("CLOUDINARY_API_SECRET")
 )
 
 def horse(request, pk):    
