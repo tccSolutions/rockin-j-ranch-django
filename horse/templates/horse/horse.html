@@ -1,0 +1,87 @@
+{% extends 'main.html'%}
+{% block title %} {{horse.name}} {%endblock%}
+{%block head%}
+<link rel="stylesheet" href="../../static/horse/css/styles.css">
+{%endblock%}
+{% block content %}
+<div class='page-container'>
+    <!-- Left Bar -->
+    <section class="left-bar">
+        {%if images %}
+        <img class='profile-image' src={{ profile_image.url }} alt="horse.img">
+        {%endif%}
+        <div>
+            <h4>{{horse.name}}</h4>
+            <h6>Primary Trainer: {{horse.trainer}}</h6>
+            <h6>Breed: {{horse.breed}}</h6>
+            <h6>Sex: {{horse.sex}}</h6>
+            <h6>Age: {{horse.age}}</h6>
+            <h6>Price: ${{horse.price}}0</h6>
+            <p>Last Updated: {{horse.updated}}</p>
+        </div>
+
+    </section>
+
+    <div class='container'>
+        <!-- About -->
+        <section class="section">
+            <div>
+                <h2>About {{horse.name}}</h2>
+                <h6>{{horse.bio}}</h6>
+            </div>
+        </section>
+
+        <hr>
+        <!-- Training -->
+        <section class="section">
+            <div>
+                <h2>{{horse.name}}'s Training Accomplishments</h2>
+                <h6>{{horse.training|linebreaksbr}}</h6>
+            </div>
+        </section>
+
+    </div>
+
+</div>
+<!-- Gallery -->
+<section class='gallery'>
+    <h2>Gallery</h2>
+    <!-- Add Image Form -->
+    {%if user.is_authenticated%}
+
+    <form class='add-image-form' action="{% url 'add-image' horse.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{image_form}}
+        <input name='image' type='file'>
+        <input type='submit' value='Add'>
+    </form>
+
+    {%endif%}
+
+   
+    <div class='gallery-container'>
+        {%for image in images%}
+        <div class='image-container'>
+            <img src={{image.url}} alt="horse image">
+            <p>{{image.comment}}</p>
+            <!-- Delete Button -->
+            {%if user.is_authenticated%}
+            <form action="{% url 'delete-image' %}" method="post">
+                {% csrf_token %}
+                <input name='name' type='hidden' value={{image.name}}>
+                <input name='horse' type='hidden' value={{horse.id}}>
+                <input type='submit' value='Delete'>
+            </form>
+            {%endif%}
+        </div>
+        {%endfor%}
+    </div>
+</section>
+
+
+
+
+
+
+
+{%endblock%}

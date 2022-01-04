@@ -1,0 +1,45 @@
+.header{
+    text-align: center;
+}
+
+
+
+h6{
+    text-align: start;
+    width:50rem;
+    line-height: 2;
+    display: flex;
+}
+
+.quote{
+    display:flex;
+    flex-direction: column;
+    max-width:15%;
+    padding: 2.5em;    
+    background-color: rgba(0, 0, 0, 0.062);
+    
+}
+.page-container .container{
+    width:85%;
+   }
+   
+
+@media screen and (max-width:950px){
+    .page-container{
+       flex-direction: column-reverse;     
+    } 
+    .container{
+        display:flex;
+        flex-direction: column;       
+    }
+    .section{
+        align-self: center;
+        width: 100%;       
+    }   
+    h6{
+        width:100%;
+    }
+    .quote{ 
+       max-width: 100%;
+    }
+}

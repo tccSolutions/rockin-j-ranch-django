@@ -1,0 +1,40 @@
+import random
+from django.shortcuts import redirect, render
+from .models import Horse, Image
+from .forms import ImageForm
+import cloudinary
+import cloudinary.uploader
+# Create your views here.
+
+cloudinary.config( 
+  cloud_name = "dmobley0608", 
+  api_key = "172351854381963", 
+  api_secret = "aHccAD-bj6FasCVv_m_xn2BSjxg" 
+)
+
+def horse(request, pk):    
+    selected_horse = Horse.objects.get(id=pk)
+    images = Image.objects.filter(horse=selected_horse)
+    if len(images) > 0:
+        profile_image = random.choice(images)
+    else:
+        profile_image = ""
+    image_form = ImageForm()    
+    context = {'horse': selected_horse, 'images':images, 'image_form':image_form, 'profile_image': profile_image}
+    return render(request, 'horse/horse.html', context)
+
+def add_image(request, pk):
+    if request.method == "POST":       
+        image = cloudinary.uploader.upload(request.FILES['image'])
+        current_horse = Horse.objects.get(id=request.POST['horse'])
+        new_image = Image(comment=request.POST['comment'],horse=current_horse, url=image["url"], name=image['public_id'])        
+        new_image.save()
+    return redirect(horse, pk=current_horse.id)
+
+def delete_image(request):
+    if request.method == "POST":  
+        current_horse = Horse.objects.get(id=request.POST['horse'])
+        image = Image.objects.get(name=request.POST['name']) 
+        cloudinary.uploader.destroy(public_id=image.name)
+        image.delete()
+    return redirect(horse, pk=current_horse.id)
