@@ -12,7 +12,12 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/barn">The Barn</a>
-          </li>                  
+          </li>
+          {%if user.is_authenticated%}                  
+            <li class='nav-item float-end'>
+              <a class='nav-link' href="https://rockin-j-ranch.herokuapp.com/admin/logout/">Sign Out</a>
+            </li>
+          {%endif%}
         </ul>
       </div>
     </div>
