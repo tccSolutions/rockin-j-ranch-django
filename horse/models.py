@@ -22,6 +22,9 @@ class Horse(models.Model):
     adoptable = models.BooleanField()
     trainer = models.ForeignKey(Trainer, on_delete=CASCADE)
     price = models.FloatField(null=True, blank=True )
+    height= models.FloatField(null=True, blank=True)
+    girth = models.FloatField(null=True, blank=True)
+    length = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.name

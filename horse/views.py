@@ -20,7 +20,8 @@ def horse(request, pk):
         profile_image = random.choice(images)
     else:
         profile_image = ""
-    image_form = ImageForm()    
+    image_form = ImageForm()
+    selected_horse.weight = round(((selected_horse.girth**2 ) * selected_horse.length)/300)
     context = {'horse': selected_horse, 'images':images, 'image_form':image_form, 'profile_image': profile_image}
     return render(request, 'horse/horse.html', context)
 

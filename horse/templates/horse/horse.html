@@ -4,29 +4,50 @@
 <link rel="stylesheet" href="../../static/horse/css/styles.css">
 {%endblock%}
 {% block content %}
-<div class='page-container'>
+
+<!-- Image Modal -->
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl bg-transparent">
+        <div class="modal-content bg-transparent text-center">
+            <div class="modal-header bg-secondary">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body justify-items-center pa-3">
+                <img id='modal-img' class='img-fluid rounded' src="" alt="Uh Oh! Image Not Found"
+                    style="max-height: 50em;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='container-fluid row'>
     <!-- Left Bar -->
-    <section class="left-bar">
-        {%if images %}
-        <img class='profile-image' src={{ profile_image.url }} alt="horse.img">
-        {%endif%}
-        <div>
+    <section class="col-xl-2 col-lg-12 container text-start justify-content-center">
+        <div class='container col-xl-12 col-md-6'>
+            {%if images %}
+            <img class='img-thumbnail' src={{ profile_image.url }} alt="horse.img">
+            {%endif%}
+
             <h4>{{horse.name}}</h4>
             <h6>Primary Trainer: {{horse.trainer}}</h6>
             <h6>Breed: {{horse.breed}}</h6>
-            <h6>Sex: {{horse.sex}}</h6>
             <h6>Age: {{horse.age}}</h6>
+            <h6>Sex: {{horse.sex}}</h6>
+            <h6>Hands: {{horse.height}}</h6>
+            <h6>Approx Weight: {{horse.weight}}lbs</h6>
+
             {% if horse.adoptable == True%}
-                <h6>Price: ${{horse.price}}0</h6>
+            <h6>Price: ${{horse.price}}0</h6>
             {%endif%}
             <p>Last Updated: {{horse.updated}}</p>
         </div>
-
     </section>
 
-    <div class='container'>
+    <div class='container col-xl-9  align-items-center justify-content-center'>
         <!-- About -->
-        <section class="section">
+        <section class="row text-center my-5">
             <div>
                 <h2>About {{horse.name}}</h2>
                 <h6>{{horse.bio}}</h6>
@@ -35,55 +56,74 @@
 
         <hr>
         <!-- Training -->
-        <section class="section">
-            <div>
-                <h2>{{horse.name}}'s Training Accomplishments</h2>
-                <h6>{{horse.training|linebreaksbr}}</h6>
+        <section class="row container text-center justify-content-center mt-5">
+            <div class="">
+                <p class="h3">{{horse.name}}'s Training Accomplishments</p>
+            </div>
+
+            <div class="col-xl-3  text-start  align-self-center">
+                <p class='h5 '>{{horse.training|linebreaksbr}}</p>
+            </div>
+        </section>
+        <hr>
+        <!-- Gallery -->
+        <section class='container text-center'>
+            <h2>Gallery</h2>
+            <!-- Add Image Form -->
+            {%if user.is_authenticated%}
+    
+            <form class='add-image-form' action="{% url 'add-image' horse.id %}" method="POST"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                {{image_form}}
+                <input name='image' type='file'>
+                <input type='submit' value='Add'>
+            </form>
+    
+            {%endif%}
+    
+            <!-- images -->
+            <div class='row justify-content-center align-items-center mb-4'>
+                {%for image in images%}
+                <div class='col-md-3 col-sm-6 m-2 p-3 '>
+                    <img class='img-fluid img-thumbnail pointer gallery-image' src={{image.url}} alt="horse image"
+                        style='max-height:12em; object-fit: contain;' data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
+                    <p>{{image.comment}}</p>
+                    <!-- Delete Button -->
+                    {%if user.is_authenticated%}
+                    <form action="{% url 'delete-image' %}" method="post">
+                        {% csrf_token %}
+                        <input name='name' type='hidden' value={{image.name}}>
+                        <input name='horse' type='hidden' value={{horse.id}}>
+                        <input type='submit' value='Delete'>
+                    </form>
+                    {%endif%}
+    
+    
+                </div>
+                {%endfor%}
             </div>
         </section>
 
     </div>
+   
 
 </div>
-<!-- Gallery -->
-<section class='gallery'>
-    <h2>Gallery</h2>
-    <!-- Add Image Form -->
-    {%if user.is_authenticated%}
-
-    <form class='add-image-form' action="{% url 'add-image' horse.id %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{image_form}}
-        <input name='image' type='file'>
-        <input type='submit' value='Add'>
-    </form>
-
-    {%endif%}
-
-   
-    <div class='gallery-container'>
-        {%for image in images%}
-        <div class='image-container'>
-            <img src={{image.url}} alt="horse image">
-            <p>{{image.comment}}</p>
-            <!-- Delete Button -->
-            {%if user.is_authenticated%}
-            <form action="{% url 'delete-image' %}" method="post">
-                {% csrf_token %}
-                <input name='name' type='hidden' value={{image.name}}>
-                <input name='horse' type='hidden' value={{horse.id}}>
-                <input type='submit' value='Delete'>
-            </form>
-            {%endif%}
-        </div>
-        {%endfor%}
-    </div>
-</section>
 
 
 
 
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
 
+    let images = $(".gallery-image")
+    let modal_image = $("#modal-img")
+    images.on("click", function (event) {
+        modal_image.attr("src", event.target.src)
+    })
 
+</script>
 
 {%endblock%}

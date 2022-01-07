@@ -12,46 +12,51 @@
 
 <!-- Available for Adoption -->
 
-<section class='section'>
+<section class='container text-center my-5'>
     <h4>Horses Looking for Homes</h4>
-    <div class='horse-container'>
-        {% for horse in horses %}
-        {%if horse.adoptable == True %}
-        <a href='{% url "horse" horse.id %}'>
-            <div>
-                {%if horse.image%}
-                <img src={{horse.image}} alt="horse image">
-                {%endif%}
-                <h6>{{horse.name}}</h6>
-                <p>{{horse.about}}..</p>
-            </div>
-        </a>
-   
-    {%endif%}
-    {%endfor%}
+    <div class='container'>
+        <div class='row justify-content-center'>
+            {% for horse in horses %}
+            {%if horse.adoptable == True %}
+            <div class="card col-xl-4 col-md-8 p-3 m-2 horse-container-color " style='max-height: 30em;'>
+                <img src={{horse.image}} class="img-fluid" alt="Uh Oh! Image Not Fount" style='max-height: 50%; object-fit: contain;'>
+                <div class="card-body">
+                  <h5 class="card-title">{{horse.name}}</h5>
+                  <p class="card-text">{{horse.about}}...</p>
+                  <a href="{% url "horse" horse.id %}" class="btn btn-primary">More Info</a>
+                </div>
+              </div>
+              {%endif%}
+              {%endfor%}
+        </div>  
     </div>
 </section>
 
 <!-- Permanent Residents -->
 
-<section class='section'>
+<section class='container text-center my-5'>
     <h4>Permanent Residents</h4>
-    <div class='horse-container'>
-        {% for horse in horses %}
-        {%if horse.adoptable == False %}
-        <a href='{% url "horse" horse.id %}'>
-            <div>
-                {%if horse.image%}
-                <img src={{horse.image}} alt="horse image">
-                {%endif%}
-                <h6>{{horse.name}}</h6>
-                <p>{{horse.about}}..</p>
-            </div>
-        </a>
+    <div class='container'>
+        <div class='row justify-content-center'>
+            {% for horse in horses %}
+            {%if horse.adoptable == False %}
+            <div class="card col-xl-4 col-md-8 p-3 m-2 horse-container-color " style='max-height: 30em;'>
+                <img src={{horse.image}} class="img-fluid" alt="Uh Oh! Image Not Fount" style='max-height: 50%; object-fit: contain;'>
+                <div class="card-body">
+                  <h5 class="card-title">{{horse.name}}</h5>
+                  <p class="card-text">{{horse.about}}...</p>
+                  <a href="{% url "horse" horse.id %}" class="btn btn-primary">More Info</a>
+                </div>
+              </div>
+              {%endif%}
+              {%endfor%}
+        </div>
+       
+      
    
-    {%endif%}
-    {%endfor%}
+   
     </div>
 </section>
+
 
 {%endblock%}
