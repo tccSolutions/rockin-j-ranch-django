@@ -20,7 +20,7 @@
             {% for horse in horses %}
             {%if horse.adoptable == True %}
             <div class="card col-xl-4 col-md-8 p-3 m-2 horse-container-color " style='max-height: 30em;'>
-                <img src={{horse.image}} class="img-fluid" alt="Uh Oh! Image Not Fount" style='max-height: 50%; object-fit: contain;'>
+                <img src='http://res.cloudinary.com/dmobley0608/image/upload/w_500,h_500,c_limit/{{horse.image.name}}' class="img-fluid" alt="Uh Oh! Image Not Fount" style='max-height: 50%; object-fit: contain;'>
                 <div class="card-body text-start">
                   <h5 class="card-title">{{horse.name}}</h5>
                   <h6 class=" ">Breed: {{horse.breed}}</h6>
@@ -45,7 +45,7 @@
             {% for horse in horses %}
             {%if horse.adoptable == False %}
             <div class="card col-xl-4 col-md-8 p-3 m-2 horse-container-color " style='max-height: 30em;'>
-                <img src={{horse.image}} class="img-fluid" alt="Uh Oh! Image Not Fount" style='max-height: 50%; object-fit: contain;'>
+                <img src='http://res.cloudinary.com/dmobley0608/image/upload/w_500,h_500,c_limit/{{horse.image.name}}' class="img-fluid" alt="Uh Oh! Image Not Fount" style='max-height: 50%; object-fit: contain;'>
                 <div class="card-body text-start">
                     <h5 class="card-title">{{horse.name}}</h5>
                     <h6 class=" ">Breed: {{horse.breed}}</h6>
