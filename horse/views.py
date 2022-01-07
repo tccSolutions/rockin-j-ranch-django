@@ -15,7 +15,7 @@ cloudinary.config(
 
 def horse(request, pk):    
     selected_horse = Horse.objects.get(id=pk)
-    images = Image.objects.filter(horse=selected_horse)
+    images = Image.objects.filter(horse=selected_horse)   
     if len(images) > 0:
         profile_image = random.choice(images)
     else:

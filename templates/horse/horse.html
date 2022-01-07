@@ -56,14 +56,18 @@
 
         <hr>
         <!-- Training -->
-        <section class="row container text-center justify-content-center mt-5">
-            <div class="">
+        <section class="container text-center justify-content-center mt-5">
+            <div class="row">
                 <p class="h3">{{horse.name}}'s Training Accomplishments</p>
             </div>
-
-            <div class="col-xl-3  text-start  align-self-center">
-                <p class='h5 '>{{horse.training|linebreaksbr}}</p>
+            {%for accomplishment in horse.training.all|dictsort:"priority"%}            
+            <div class="row  justify-content-center "> 
+                <div class="col-xl-4 col-lg-8 text-start">
+                    <p class='h5 '>&#x2713; {{accomplishment}}</p>
+                </div>               
+                
             </div>
+            {%endfor%}
         </section>
         <hr>
         <!-- Gallery -->

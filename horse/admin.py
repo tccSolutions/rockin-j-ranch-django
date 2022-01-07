@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Trainer, Horse, Image
+from .models import Trainer, Horse, Training
 
 admin.site.register(Trainer)
 admin.site.register(Horse)
-admin.site.register(Image)
+admin.site.register(Training)

@@ -10,13 +10,23 @@ class Trainer(models.Model):
 
     def __str__(self):
         return self.name
-        
+
+class Training(models.Model):   
+   description = models.CharField(max_length=300)
+   priority = models.IntegerField(null=True, blank=True)
+   
+   class Meta:
+       ordering:('priority')
+   def __str__(self):
+       return self.description
+
+
 class Horse(models.Model):
     name = models.CharField(max_length=200)
     breed = models.CharField(max_length=200)
     bio = models.TextField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
-    training = models.TextField(null=True, blank=True)
+    training = models.ManyToManyField(Training)
     sex = models.CharField(max_length=100)
     age = models.IntegerField(null=True, blank=True)
     adoptable = models.BooleanField()
@@ -29,13 +39,16 @@ class Horse(models.Model):
     def __str__(self):
         return self.name
 
+
 class Image(models.Model):
-    url = models.TextField()
-    comment = models.TextField(null=True, blank=True)
-    name = models.TextField()
+    url = models.CharField(max_length=300)
+    comment = models.CharField(max_length=300, null=True, blank=True)
+    name = models.CharField(max_length=300)
     horse = models.ForeignKey(Horse, on_delete=CASCADE)
 
     def __str__(self):
         return self.url
+
+
 
 
