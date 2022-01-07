@@ -19,7 +19,7 @@ nav{
     border-bottom:1px solid black;
     min-height:5em;
     box-shadow: 5px 5px 5px black;
-    margin-bottom:5em;  
+    margin-bottom:2em;  
      
 }
 
@@ -42,25 +42,11 @@ nav{
     font-family: 'Dancing Script', cursive;
 }
 
-.section{
-    display:flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    margin: 5em;
-}
 
-.page-container{
-    display: flex;
-   
-}
+
+
 
 .pointer{
     cursor: pointer;
 }
 
-@media only screen and (max-width:600px){
-    .page-container{
-        flex-direction: column;
-    }
-}
