@@ -1,4 +1,5 @@
 {% extends 'main.html'%}
+{% load static %}
 {% block title%}The Barn @{%endblock%}
 {%block head%}
 <link rel="stylesheet" href="../../static/barn/css/styles.css">
@@ -20,11 +21,14 @@
             {%if horse.adoptable == True %}
             <div class="card col-xl-4 col-md-8 p-3 m-2 horse-container-color " style='max-height: 30em;'>
                 <img src={{horse.image}} class="img-fluid" alt="Uh Oh! Image Not Fount" style='max-height: 50%; object-fit: contain;'>
-                <div class="card-body">
+                <div class="card-body text-start">
                   <h5 class="card-title">{{horse.name}}</h5>
-                  <p class="card-text">{{horse.about}}...</p>
-                  <a href="{% url "horse" horse.id %}" class="btn btn-primary">More Info</a>
+                  <h6 class=" ">Breed: {{horse.breed}}</h6>
+                  <h6 class="">Age: {{horse.age}}</h6>
+                  <h6 class="">Sex: {{horse.sex}}</h6>
+                  <h6 class="">Hands: {{horse.height}}</h6>                 
                 </div>
+                <a href="{% url "horse" horse.id %}" class="btn btn-secondary">More Info</a>
               </div>
               {%endif%}
               {%endfor%}
@@ -42,11 +46,14 @@
             {%if horse.adoptable == False %}
             <div class="card col-xl-4 col-md-8 p-3 m-2 horse-container-color " style='max-height: 30em;'>
                 <img src={{horse.image}} class="img-fluid" alt="Uh Oh! Image Not Fount" style='max-height: 50%; object-fit: contain;'>
-                <div class="card-body">
-                  <h5 class="card-title">{{horse.name}}</h5>
-                  <p class="card-text">{{horse.about}}...</p>
-                  <a href="{% url "horse" horse.id %}" class="btn btn-primary">More Info</a>
-                </div>
+                <div class="card-body text-start">
+                    <h5 class="card-title">{{horse.name}}</h5>
+                    <h6 class=" ">Breed: {{horse.breed}}</h6>
+                    <h6 class="">Age: {{horse.age}}</h6>
+                    <h6 class="">Sex: {{horse.sex}}</h6>
+                    <h6 class="">Hands: {{horse.height}}</h6>                 
+                  </div>
+                  <a href="{% url "horse" horse.id %}" class="btn btn-secondary">More Info</a>
               </div>
               {%endif%}
               {%endfor%}
