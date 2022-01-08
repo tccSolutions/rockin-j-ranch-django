@@ -9,9 +9,8 @@ body{
     background-image: linear-gradient(45deg, white, rgb(136, 102, 52));
     background-size:contain;
     background-repeat: no-repeat;
-    color:rgb(0, 0, 0);
-   
-    font-family: 'Luxurious Roman', cursive;
+    color:rgb(0, 0, 0);   
+    font-family: 'Luxurious Roman', cursive !important;
 }
 
 nav{
