@@ -5,7 +5,9 @@ from .models import Horse, Image
 from .forms import ImageForm
 import cloudinary
 import cloudinary.uploader
-# Create your views here.
+from django.views.decorators.clickjacking import xframe_options_exempt
+
+
 
 cloudinary.config( 
   cloud_name = os.getenv("CLOUDINARY_NAME"), 
@@ -13,6 +15,7 @@ cloudinary.config(
   api_secret = os.getenv("CLOUDINARY_API_SECRET")
 )
 
+@xframe_options_exempt
 def horse(request, pk):    
     selected_horse = Horse.objects.get(id=pk)
     images = Image.objects.filter(horse=selected_horse)   

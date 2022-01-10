@@ -1,7 +1,9 @@
 import random
 from django.shortcuts import render
 from horse.models import Horse, Image
-# Create your views here.
+from django.views.decorators.clickjacking import xframe_options_exempt
+
+@xframe_options_exempt
 def barn(request):
    
     horses = Horse.objects.all()
