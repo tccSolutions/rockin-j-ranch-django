@@ -28,7 +28,7 @@
                   <h6 class="">Sex: {{horse.sex}}</h6>
                   <h6 class="">Hands: {{horse.height}}</h6>                 
                 </div>
-                <a href="{% url "horse" horse.id %}" class="btn btn-secondary">More Info</a>
+                <a href="{% url "horse" horse.name horse.id %}" class="btn btn-secondary">More Info</a>
               </div>
               {%endif%}
               {%endfor%}
@@ -53,7 +53,7 @@
                     <h6 class="">Sex: {{horse.sex}}</h6>
                     <h6 class="">Hands: {{horse.height}}</h6>                 
                   </div>
-                  <a href="{% url "horse" horse.id %}" class="btn btn-secondary">More Info</a>
+                  <a href="{% url "horse" horse.name horse.id %}" class="btn btn-secondary">More Info</a>
               </div>
               {%endif%}
               {%endfor%}

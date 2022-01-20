@@ -16,7 +16,7 @@ cloudinary.config(
 )
 
 @xframe_options_exempt
-def horse(request, pk):    
+def horse(request, name, pk):   
     selected_horse = Horse.objects.get(id=pk)
     images = Image.objects.filter(horse=selected_horse)   
     if len(images) > 0:

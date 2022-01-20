@@ -1,6 +1,6 @@
 {% extends 'main.html'%}
 {% load static %}
-{% block title %} {{horse.name}} {%endblock%}
+{% block title %} {{horse.name}} @ {%endblock%}
 {%block head%}
 <link rel="stylesheet" href="../../static/horse/css/styles.css">
 {%endblock%}
@@ -23,6 +23,43 @@
     </div>
 </div>
 
+<!-- More Info Modal -->
+<!-- Modal -->
+<div class="modal fade" id="formstaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  " >
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <h5 class="modal-title">Request More Information on {{horse.name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body justify-items-center pa-3">
+                <form>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name" placeholder="Jane Doe">  
+                        <label for="name" >Name:</label>                                             
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email" placeholder="jdoe@giddy-up.com"> 
+                        <label for="email" >Email:</label>                                              
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="horse" placeholder="Giddy Up" value={{horse.name}}>  
+                        <label for="horse" >Horse:</label>                                             
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="Leave your message here" id="floatingTextarea2" style="height: 200px"></textarea>
+                        <label for="floatingTextarea2">Message</label>
+                    </div>
+                    <div>
+                        <input class='btn btn-success' type="submit" value="Send">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class='container-fluid row'>
     <!-- Left Bar -->
     <section class="col-xl-2 col-lg-12 container text-start justify-content-center">
@@ -40,7 +77,10 @@
             <h6>Approx Weight: {{horse.weight}}lbs</h6>
             {% if horse.adoptable == True%}
             <h6>Price: ${{horse.price}}0</h6>
-            {%endif%}
+            <button class='btn btn-secondary' data-bs-toggle="modal"
+            data-bs-target="#formstaticBackdrop">Request More Info</button>         
+            <br>   
+            {%endif%}           
             <sub>Last Updated: {{horse.updated}}</sub>
         </div>
     </section>
