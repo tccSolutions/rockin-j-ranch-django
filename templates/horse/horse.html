@@ -4,7 +4,20 @@
 {%block head%}
 <link rel="stylesheet" href="../../static/horse/css/styles.css">
 {%endblock%}
+
 {% block content %}
+
+<!-- Flash Messages -->
+{% if messages %}
+<ul class="messages row justify-content-center">
+    {% for message in messages %}
+    <div {% if message.tags %} class="{{ message.tags }} alert alert-primary alert-dismissible text-center w-50 fade show"{% endif %} role="alert" >
+        {{message}}
+        <button class='btn-close ms-auto' data-bs-dismiss="alert"></button>
+      </div>   
+    {% endfor %}
+</ul>
+{% endif %}
 
 <!-- Image Modal -->
 <!-- Modal -->
@@ -34,25 +47,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body justify-items-center pa-3">
-                <form>
+                <form action="{% url 'request-info' %}" method = "POST" onSubmit="document.getElementById('request_btn').disabled=true;" >
+                    {%csrf_token%}
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="name" placeholder="Jane Doe">  
+                        <input type="text" class="form-control" name="name" placeholder="Jane Doe" required>  
                         <label for="name" >Name:</label>                                             
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="email" placeholder="jdoe@giddy-up.com"> 
+                        <input type="email" class="form-control" name="email" placeholder="jdoe@giddy-up.com" required> 
                         <label for="email" >Email:</label>                                              
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="horse" placeholder="Giddy Up" value={{horse.name}}>  
-                        <label for="horse" >Horse:</label>                                             
+                        <input type="text" class="form-control" name="horse_name" placeholder="Giddy Up" value={{horse.name}} required>  
+                        <label for="horse_name" >Horse:</label>                                             
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" placeholder="Leave your message here" id="floatingTextarea2" style="height: 200px"></textarea>
-                        <label for="floatingTextarea2">Message</label>
+                        <textarea class="form-control" placeholder="Leave your message here" name="message" style="height: 200px" required></textarea>
+                        <label for="message">Message</label>
                     </div>
                     <div>
-                        <input class='btn btn-success' type="submit" value="Send">
+                        <input id='request_btn' class='btn btn-success' type="submit" value="Send">
                     </div>
                 </form>
             </div>
@@ -161,11 +175,15 @@
 <!-- JQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-
+    const request_btn = $("#request_btn")
     let images = $(".gallery-image")
     let modal_image = $("#modal-img")
     images.on("click", function (event) {
         modal_image.attr("src", event.target.src)
+    })
+
+    request_btn.on('click', function(event){
+        request_btn.attr('value', "Sending...")      
     })
 
 </script>

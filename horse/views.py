@@ -6,8 +6,9 @@ from .forms import ImageForm
 import cloudinary
 import cloudinary.uploader
 from django.views.decorators.clickjacking import xframe_options_exempt
-
-
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
 
 cloudinary.config( 
   cloud_name = os.getenv("CLOUDINARY_NAME"), 
@@ -43,3 +44,29 @@ def delete_image(request):
         cloudinary.uploader.destroy(public_id=image.name)
         image.delete()
     return redirect(horse, pk=current_horse.id)
+
+def request_info(request):
+    if request.method == "POST":        
+        subject = request.POST['horse_name']
+        message = f"Name: {request.POST['name']}\nEMAIL: {request.POST['email']}\n\n{request.POST['message']}"
+        if not request.POST['name']:
+            messages.error(request, "Please enter your name")
+        elif not request.POST['email']:
+            messages.error(request, "Please enter your email")
+        elif not request.POST['message']:
+            messages.error(request, "Please ask a question")
+        else:
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    settings.EMAIL_HOST_USER,
+                    ['rockingjranch369@yahoo.com', 'dmobley0608@gmail.com'],
+                    fail_silently=False
+                )
+                messages.info(request, "Thank you! Your message has been sent.")
+            except:
+                messages.error(request, 'Error Sending Message')
+    return redirect(request.META['HTTP_REFERER'])
+    
+
