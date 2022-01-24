@@ -28,7 +28,7 @@ class Horse(models.Model):
     updated = models.DateTimeField(auto_now=True)
     training = models.ManyToManyField(Training)
     sex = models.CharField(max_length=100)
-    age = models.IntegerField(null=True, blank=True)
+    year_foaled = models.IntegerField(null=True, blank=True)
     adoptable = models.BooleanField()
     trainer = models.ForeignKey(Trainer, on_delete=CASCADE)
     price = models.FloatField(null=True, blank=True )

@@ -9,7 +9,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
-
+from datetime import date
 cloudinary.config( 
   cloud_name = os.getenv("CLOUDINARY_NAME"), 
   api_key = os.getenv("CLOUDINARY_API_KEY"), 
@@ -26,6 +26,7 @@ def horse(request, name, pk):
         profile_image = ""
     image_form = ImageForm()
     selected_horse.weight = round(((selected_horse.girth**2 ) * selected_horse.length)/300)
+    selected_horse.age = date.today().year - selected_horse.year_foaled    
     context = {'horse': selected_horse, 'images':images, 'image_form':image_form, 'profile_image': profile_image}
     return render(request, 'horse/horse.html', context)
 
