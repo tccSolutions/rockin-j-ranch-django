@@ -112,7 +112,11 @@
         <!-- Training -->
         <section class="container text-center justify-content-center mt-5">
             <div class="row">
-                <p class="h3">{{horse.name}}'s Training Accomplishments</p>
+                {% if horse.name|last == 's' %}
+                    <p class="h3">{{horse.name}}' Training Accomplishments</p>
+                {%else%}
+                    <p class="h3">{{horse.name}}'s Training Accomplishments</p>
+                    {%endif%}
             </div>
             {%for accomplishment in horse.training.all|dictsort:"priority"%}            
             <div class="row  justify-content-center "> 
