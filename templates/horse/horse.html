@@ -74,6 +74,34 @@
     </div>
 </div>
 
+<!-- Add Image Modal -->
+<div class="modal fade" id="addImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add an image to the gallery.</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class='add-image-form' action="{% url 'add-image' %}" method="POST"
+            enctype="multipart/form-data">
+            {% csrf_token %}
+            <input name='horse' value={{horse.id}} hidden>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Select a Photo</label>
+                <input class="form-control" type="file" id="formFile" name='image' required>
+            </div>
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name='comment'></textarea>
+                <label for="floatingTextarea2">Comment</label>
+              </div>          
+            <input type='submit' value='Add'>
+        </form>
+        </div>       
+      </div>
+    </div>
+  </div>
+
 <div class='container-fluid row'>
     <!-- Left Bar -->
     <section class="col-xl-2 col-lg-12 container text-start justify-content-center">
@@ -133,15 +161,11 @@
             <h2>Gallery</h2>
             <!-- Add Image Form -->
             {%if user.is_authenticated%}
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">
+                Add Image
+              </button>
     
-            <form class='add-image-form' action="{% url 'add-image' horse.id %}" method="POST"
-                enctype="multipart/form-data">
-                {% csrf_token %}
-                {{image_form}}
-                <input name='image' type='file'>
-                <input type='submit' value='Add'>
-            </form>
-    
+           
             {%endif%}
     
             <!-- images -->

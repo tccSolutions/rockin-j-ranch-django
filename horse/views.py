@@ -2,7 +2,6 @@ import os
 import random
 from django.shortcuts import redirect, render
 from .models import Horse, Image
-from .forms import ImageForm
 import cloudinary
 import cloudinary.uploader
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -10,6 +9,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 from datetime import date
+
 cloudinary.config( 
   cloud_name = os.getenv("CLOUDINARY_NAME"), 
   api_key = os.getenv("CLOUDINARY_API_KEY"), 
@@ -23,21 +23,24 @@ def horse(request, name, pk):
     if len(images) > 0:
         profile_image = random.choice(images)
     else:
-        profile_image = ""
-    image_form = ImageForm()
+        profile_image = ""    
     if selected_horse.girth and selected_horse.length:
         selected_horse.weight = round(((selected_horse.girth**2 ) * selected_horse.length)/300)
     selected_horse.age = date.today().year - selected_horse.year_foaled    
-    context = {'horse': selected_horse, 'images':images, 'image_form':image_form, 'profile_image': profile_image}
+    context = {'horse': selected_horse, 'images':images, 'profile_image': profile_image}
     return render(request, 'horse/horse.html', context)
 
-def add_image(request, pk):
-    if request.method == "POST":       
-        image = cloudinary.uploader.upload(request.FILES['image'])
-        current_horse = Horse.objects.get(id=request.POST['horse'])
-        new_image = Image(comment=request.POST['comment'],horse=current_horse, url=image["url"], name=image['public_id'])        
-        new_image.save()
-    return redirect(horse, pk=current_horse.id)
+def add_image(request):   
+    if request.method == "POST":  
+        try:  
+            print("creating image")   
+            image = cloudinary.uploader.upload(request.FILES['image'])         
+            current_horse = Horse.objects.get(id=request.POST['horse'])
+            new_image = Image(comment=request.POST['comment'],horse=current_horse, url=image["url"], name=image['public_id'])        
+            new_image.save()
+        except:
+          messages.warning(request, 'Error Uploading Image')
+    return redirect(horse, name=current_horse.name, pk=current_horse.id)
 
 def delete_image(request):
     if request.method == "POST":  
@@ -45,7 +48,7 @@ def delete_image(request):
         image = Image.objects.get(name=request.POST['name']) 
         cloudinary.uploader.destroy(public_id=image.name)
         image.delete()
-    return redirect(horse, pk=current_horse.id)
+    return redirect(horse, name=current_horse.name, pk=current_horse.id)
 
 def request_info(request):
     if request.method == "POST":        
