@@ -7,17 +7,7 @@
 
 {% block content %}
 
-<!-- Flash Messages -->
-{% if messages %}
-<ul class="messages row justify-content-center">
-    {% for message in messages %}
-    <div {% if message.tags %} class="{{ message.tags }} alert alert-primary alert-dismissible text-center w-50 fade show"{% endif %} role="alert" >
-        {{message}}
-        <button class='btn-close ms-auto' data-bs-dismiss="alert"></button>
-      </div>   
-    {% endfor %}
-</ul>
-{% endif %}
+
 
 <!-- Image Modal -->
 <!-- Modal -->
@@ -91,7 +81,7 @@
                 <label for="formFile" class="form-label">Select a Photo</label>
                 <input class="form-control" type="file" id="formFile" name='image' required>
             </div>
-            <div class="form-floating">
+            <div class="form-floating mb-3">
                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name='comment'></textarea>
                 <label for="floatingTextarea2">Comment</label>
               </div>          
@@ -122,8 +112,11 @@
             <button class='btn btn-secondary' data-bs-toggle="modal"
             data-bs-target="#formstaticBackdrop">Request More Info</button>         
             <br>   
-            {%endif%}           
+            {%endif%} 
+            <a class='btn btn-secondary m-0' href="{% url 'notes' horse.id %}">View Training Log</a>  
+            <br>        
             <sub>Last Updated: {{horse.updated}}</sub>
+           
         </div>
     </section>
 
@@ -141,9 +134,9 @@
         <section class="container text-center justify-content-center mt-5">
             <div class="row">
                 {% if horse.name|last == 's' %}
-                    <p class="h3">{{horse.name}}' Training Accomplishments</p>
+                    <p class="">{{horse.name}}' Training Accomplishments</p>
                 {%else%}
-                    <p class="h3">{{horse.name}}'s Training Accomplishments</p>
+                    <p class="">{{horse.name}}'s Training Accomplishments</p>
                     {%endif%}
             </div>
             {%for accomplishment in horse.training.all|dictsort:"priority"%}            

@@ -22,13 +22,14 @@ class Training(models.Model):
        return self.description
 
 
+
 class Horse(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=200)
     breed = models.CharField(max_length=200)
     bio = models.TextField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
-    training = models.ManyToManyField(Training, null=True)
+    training = models.ManyToManyField(Training)
     sex = models.CharField(max_length=100)
     year_foaled = models.IntegerField(null=True, blank=True)
     adoptable = models.BooleanField()
@@ -51,6 +52,11 @@ class Image(models.Model):
     def __str__(self):
         return self.url
 
+class Note(models.Model):
+    date_created = models.DateField()
+    note = models.CharField(max_length=500)
+    horse = models.ForeignKey(Horse, on_delete=CASCADE)
 
-
+    def __str__(self):
+        return self.note
 

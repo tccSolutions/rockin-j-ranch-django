@@ -1,14 +1,14 @@
 import os
 import random
 from django.shortcuts import redirect, render
-from .models import Horse, Image
+from .models import Horse, Image, Note
 import cloudinary
 import cloudinary.uploader
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
-from datetime import date
+from datetime import date, datetime
 
 cloudinary.config( 
   cloud_name = os.getenv("CLOUDINARY_NAME"), 
@@ -49,6 +49,20 @@ def delete_image(request):
         cloudinary.uploader.destroy(public_id=image.name)
         image.delete()
     return redirect(horse, name=current_horse.name, pk=current_horse.id)
+
+def notes(request, pk):   
+    horse = Horse.objects.get(id=pk)
+    if Image.objects.filter(horse=horse):
+        horse.image = Image.objects.filter(horse=horse).first()
+        print(horse.image)    
+    training_notes = Note.objects.filter(horse=horse.id)  
+    context={'horse':horse, 'training_notes': training_notes, }
+    if request.method == "POST":
+        new_note = Note(date_created=request.POST['date'], note=request.POST['note'], horse=horse)
+        new_note.save()
+        messages.info(request, "Note Successfully Saved")
+        return redirect(notes, pk=horse.id)
+    return render(request, "horse/training_notes.html", context)
 
 def request_info(request):
     if request.method == "POST":        

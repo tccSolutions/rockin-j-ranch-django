@@ -1,0 +1,73 @@
+{% extends 'main.html'%}
+{% load static %}
+{% block title %} {{horse.name}} @ {%endblock%}
+{%block head%}
+<link rel="stylesheet" href="../../static/horse/css/styles.css">
+{%endblock%}
+
+{% block content %}
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Journal Entry</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+         <form method="POST">
+             {%csrf_token%}
+             <div class="mb-3">
+                <label for="date" class="form-label">Entry Date</label>
+                <input type="date" class="form-control" id="date" name='date' required>        
+            </div>
+            <div class="mb-3">
+                <label for="note" class="form-label">Entry</label>
+                <textarea type="text" class="form-control" id="note" name='note' rows="15"  required></textarea>             
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add Entry</button>
+              </div>
+         </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+<div class="container-fluid">
+    <div class='row text-center justify-content-center mb-5'>
+        {% if horse.name|last == 's' %}
+            <h2 class="">{{horse.name}}' Training Accomplishments</h2>
+        {%else%}
+            <h2 class="">{{horse.name}}'s Training Accomplishments</h2>
+        {%endif%}
+        {%if horse.image%}
+        <div class='mb-3'>
+            <img class='rounded' src={{horse.image}} alt="sorry no image" width='300px'>
+        </div>
+        {%endif%}
+        {%if user.is_authenticated%}
+        <!-- Button trigger modal -->
+        <button type="button " class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="max-width: 100px;">
+            Add Note
+        </button>
+        {%endif%}
+  
+    </div>
+
+    {% for note in training_notes %}
+    <div class='row justify-content-center mb-3'>
+        <div class='w-50'>
+            <div>{{note.date_created}}</div>
+            <div>{{note.note}}</div>
+        </div>       
+    </div>
+    {%endfor%}
+
+</div>
+
+{%endblock%}

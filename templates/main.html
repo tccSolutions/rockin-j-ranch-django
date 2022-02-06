@@ -29,7 +29,17 @@
 
 <body>
     {% include 'navbar.html' %}
-
+    <!-- Flash Messages -->
+{% if messages %}
+<ul class="messages row justify-content-center">
+    {% for message in messages %}
+    <div {% if message.tags %} class="{{ message.tags }} alert alert-primary alert-dismissible text-center w-50 fade show"{% endif %} role="alert" >
+        {{message}}
+        <button class='btn-close ms-auto' data-bs-dismiss="alert"></button>
+      </div>   
+    {% endfor %}
+</ul>
+{% endif %}
     {%block content%}
 
     {%endblock%}
