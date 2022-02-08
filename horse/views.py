@@ -1,13 +1,18 @@
+from asyncio.windows_events import NULL
+from json import encoder
 import os
 import random
+import json
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from .models import Horse, Image, Note
+from .models import Horse, Image, Note, Medical
 import cloudinary
 import cloudinary.uploader
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
+from django.core import serializers
 from datetime import date, datetime
 
 cloudinary.config( 
@@ -28,6 +33,15 @@ def horse(request, name, pk):
         profile_image = ""    
     if selected_horse.girth and selected_horse.length:
         selected_horse.weight = round(((selected_horse.girth**2 ) * selected_horse.length)/300)
+    elif Medical.objects.filter(horse=selected_horse):
+        new_weight = 0
+        weight_date=NULL
+        for record in Medical.objects.filter(horse=selected_horse):            
+            if record.weight:
+               new_weight = record.weight
+               weight_date = record.date
+               if weight_date >= record.date:
+                   selected_horse.weight = new_weight
     selected_horse.age = date.today().year - selected_horse.year_foaled    
     context = {'horse': selected_horse, 'images':images, 'profile_image': profile_image}
     return render(request, 'horse/horse.html', context)
@@ -62,6 +76,7 @@ def notes(request, pk):
         print(horse.image)    
     training_notes = Note.objects.filter(horse=horse.id)  
     context={'horse':horse, 'training_notes': training_notes, }
+
     #add note
     if request.method == "POST":
         try:
@@ -76,6 +91,13 @@ def notes(request, pk):
             return redirect(notes, pk=horse.id)
     return render(request, "horse/training_notes.html", context)
 
+#Get Horse Medical Data
+def get_medical(request, pk):
+    horse = Horse.objects.get(id=pk)  
+    medical_records = Medical.objects.filter(horse=horse).values()     
+    return JsonResponse(list(medical_records), safe=False)
+
+#Request info on Horse
 def request_info(request):
     if request.method == "POST":        
         subject = request.POST['horse_name']
