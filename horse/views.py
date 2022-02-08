@@ -1,8 +1,5 @@
-from asyncio.windows_events import NULL
-from json import encoder
 import os
 import random
-import json
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from .models import Horse, Image, Note, Medical
@@ -12,7 +9,6 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
-from django.core import serializers
 from datetime import date, datetime
 
 cloudinary.config( 
@@ -35,7 +31,7 @@ def horse(request, name, pk):
         selected_horse.weight = round(((selected_horse.girth**2 ) * selected_horse.length)/300)
     elif Medical.objects.filter(horse=selected_horse):
         new_weight = 0
-        weight_date=NULL
+        weight_date=0
         for record in Medical.objects.filter(horse=selected_horse):            
             if record.weight:
                new_weight = record.weight
