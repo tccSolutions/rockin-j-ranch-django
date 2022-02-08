@@ -16,7 +16,9 @@ cloudinary.config(
   api_secret = os.getenv("CLOUDINARY_API_SECRET")
 )
 
+#View homepage from iframe
 @xframe_options_exempt
+#horse load page
 def horse(request, name, pk):   
     selected_horse = Horse.objects.get(id=pk)
     images = Image.objects.filter(horse=selected_horse)   
@@ -30,6 +32,7 @@ def horse(request, name, pk):
     context = {'horse': selected_horse, 'images':images, 'profile_image': profile_image}
     return render(request, 'horse/horse.html', context)
 
+#add image
 def add_image(request):   
     if request.method == "POST":  
         try:  
@@ -42,6 +45,7 @@ def add_image(request):
           messages.warning(request, 'Error Uploading Image')
     return redirect(horse, name=current_horse.name, pk=current_horse.id)
 
+#delete image
 def delete_image(request):
     if request.method == "POST":  
         current_horse = Horse.objects.get(id=request.POST['horse'])
@@ -50,6 +54,7 @@ def delete_image(request):
         image.delete()
     return redirect(horse, name=current_horse.name, pk=current_horse.id)
 
+#notes page
 def notes(request, pk):   
     horse = Horse.objects.get(id=pk)
     if Image.objects.filter(horse=horse):
@@ -57,11 +62,18 @@ def notes(request, pk):
         print(horse.image)    
     training_notes = Note.objects.filter(horse=horse.id)  
     context={'horse':horse, 'training_notes': training_notes, }
+    #add note
     if request.method == "POST":
-        new_note = Note(date_created=request.POST['date'], note=request.POST['note'], horse=horse)
-        new_note.save()
-        messages.info(request, "Note Successfully Saved")
-        return redirect(notes, pk=horse.id)
+        try:
+            note = Note.objects.get(date=request.POST['date'], horse=horse)
+            note.note = request.POST['note']
+            note.save()
+            return redirect(notes, pk=horse.id)
+        except:
+            new_note = Note(date=request.POST['date'], note=request.POST['note'], horse=horse)
+            new_note.save()
+            messages.info(request, "Note Successfully Saved")
+            return redirect(notes, pk=horse.id)
     return render(request, "horse/training_notes.html", context)
 
 def request_info(request):

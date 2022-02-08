@@ -2,48 +2,53 @@
 {% load static %}
 {% block title %} {{horse.name}} @ {%endblock%}
 {%block head%}
-<link rel="stylesheet" href="../../static/horse/css/styles.css">
+
 {%endblock%}
 
 {% block content %}
 
 
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Add Note Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Journal Entry</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-         <form method="POST">
-             {%csrf_token%}
-             <div class="mb-3">
-                <label for="date" class="form-label">Entry Date</label>
-                <input type="date" class="form-control" id="date" name='date' required>        
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Journal Entry</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="mb-3">
-                <label for="note" class="form-label">Entry</label>
-                <textarea type="text" class="form-control" id="note" name='note' rows="15"  required></textarea>             
+            <div class="modal-body">
+                <form method="POST">
+                    {%csrf_token%}
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Entry Date</label>
+                        <input type="date" class="form-control" id="date" name='date' required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Entry</label>
+                        <textarea type="text" class="form-control" id="note" name='note' rows="15" value=""
+                            required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" id="submit_btn" class="btn btn-primary">                          
+                            Add Entry
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Add Entry</button>
-              </div>
-         </form>
+
         </div>
-        
-      </div>
     </div>
-  </div>
+</div>
+
+
 
 <div class="container-fluid">
     <div class='row text-center justify-content-center mb-5'>
         {% if horse.name|last == 's' %}
-            <h2 class="">{{horse.name}}' Training Accomplishments</h2>
+        <h2 class="">{{horse.name}}' Training Accomplishments</h2>
         {%else%}
-            <h2 class="">{{horse.name}}'s Training Accomplishments</h2>
+        <h2 class="">{{horse.name}}'s Training Accomplishments</h2>
         {%endif%}
         {%if horse.image%}
         <div class='mb-3'>
@@ -52,22 +57,46 @@
         {%endif%}
         {%if user.is_authenticated%}
         <!-- Button trigger modal -->
-        <button type="button " class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="max-width: 100px;">
+        <button type="button" id="add_note_btn" class="btn btn-secondary" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" style="max-width: 100px;">
             Add Note
         </button>
         {%endif%}
-  
+
     </div>
 
     {% for note in training_notes %}
     <div class='row justify-content-center mb-3'>
-        <div class='w-50'>
-            <div>{{note.date_created}}</div>
-            <div>{{note.note}}</div>
-        </div>       
+        <div class='w-75 border-bottom border-4 border-dark'>
+            <div class='d-flex align-items-center mb-2'>
+                <h6>{{note.date}}</h6>
+                {%if user.is_authenticated%}
+                <button class='btn btn-secondary mx-3 edit_btn ' data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">Edit</button>
+                {%endif%}
+            </div>
+            <div>
+                <h4>{{note.note}}</h4>
+            </div>
+        </div>
     </div>
     {%endfor%}
 
-</div>
+    <script>
 
+        $("#add_note_btn").click(function () {
+            $("#note").val("");
+            $("#date").val("");
+            $("#submit_btn").html("Add");
+        })
+
+        $(".edit_btn").click(function () {
+            let text = this.parentNode.parentElement.children[1].innerText;
+            $("#note").val(text);
+            $("#date").val("");
+            $("#submit_btn").html("Update");
+        })     
+
+    </script>
+</div>
 {%endblock%}

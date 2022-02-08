@@ -53,7 +53,7 @@ class Image(models.Model):
         return self.url
 
 class Note(models.Model):
-    date_created = models.DateField()
+    date = models.DateField()
     note = models.CharField(max_length=500)
     horse = models.ForeignKey(Horse, on_delete=CASCADE)
 
