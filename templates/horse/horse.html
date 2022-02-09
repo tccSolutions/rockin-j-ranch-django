@@ -87,7 +87,7 @@
                         <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
                             style="height: 100px" name='comment'></textarea>
                         <label for="floatingTextarea2">Comment</label>
-                    </div>
+                    </div>                    
                     <input type='submit' value='Add'>
                 </form>
             </div>
@@ -97,7 +97,7 @@
 
 <div class='container-fluid row'>
     <!-- Left Bar -->
-    <section class="col-xl-2 col-lg-12 container text-start justify-content-center">
+    <section class="col-xl-2 col-lg-12 container text-start justify-content-center ">
         <div class='container col-xl-12 col-md-6'>
             {%if images %}
             <img class='img-thumbnail'
@@ -149,57 +149,80 @@
                 <div class="col-xl-4 col-lg-8 text-start">
                     <p class='h5 '>&#x2713; {{accomplishment}}</p>
                 </div>
-
             </div>
             {%endfor%}
         </section>
-        <hr>
-        <!-- Gallery -->
-        <section class='container text-center'>
-            <h2>Gallery</h2>
-            <!-- Add Image Form -->
-            {%if user.is_authenticated%}
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">
-                Add Image
-            </button>
+       
+            <hr>
+            <!-- Gallery -->
+            <section class='container text-center '>
+                <h2>Gallery</h2>
+                <!-- Add Image Form -->
+                {%if user.is_authenticated%}
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addImageModal">
+                        Add Image
+                    </button>
+                {%endif%}
 
-
-            {%endif%}
-
-            <!-- images -->
-            <div class='row justify-content-center align-items-center mb-4'>
-                {%for image in images%}
-                <div class='col-md-3 col-sm-6 m-2 p-3 '>
-                    <img class='img-fluid img-thumbnail pointer gallery-image' src={{image.url}} alt="horse image"
-                        style='max-height:12em; object-fit: contain;' data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop">
-                    <p>{{image.comment}}</p>
-                    <!-- Delete Button -->
-                    {%if user.is_authenticated%}
-                    <form action="{% url 'delete-image' %}" method="post">
-                        {% csrf_token %}
-                        <input name='name' type='hidden' value={{image.name}}>
-                        <input name='horse' type='hidden' value={{horse.id}}>
-                        <input type='submit' value='Delete'>
-                    </form>
+                <!-- images -->
+                <div class='row justify-content-center align-items-center mb-2 '>
+                    {%for image in images%}
+                    {%if not image.private_image%}
+                    <div class='col-md-3 col-sm-6 m-2 p-3 '>
+                        <img class='img-fluid img-thumbnail pointer gallery-image'
+                            src="http://res.cloudinary.com/dmobley0608/image/upload/w_500,h_300,c_limit/rockin-j-ranch/{{horse.name}}/{{image.name}}"
+                            alt="horse image" style='max-height:12em; object-fit: contain;' data-bs-toggle="modal"
+                            name="{{image.name}}" data-bs-target="#staticBackdrop">
+                        <p>{{image.comment}}</p>
+                        <!-- Delete Button -->
+                        {%if user.is_authenticated%}
+                        <form action="{% url 'delete-image' %}" method="post">
+                            {% csrf_token %}
+                            <input name='name' type='hidden' value={{image.name}}>
+                            <input name='horse' type='hidden' value={{horse.id}}>
+                            <input type='submit' value='Delete'>
+                        </form>
+                        {%endif%}
+                        
+                    </div>
+                    {%else%}
+                        {%if  image.private_image and user.is_authenticated %}
+                        <div class='col-md-3 col-sm-6 m-2 p-3 '>
+                            <img class='img-fluid img-thumbnail pointer gallery-image'
+                                src="http://res.cloudinary.com/dmobley0608/image/upload/w_500,h_300,c_limit/rockin-j-ranch/{{horse.name}}/{{image.name}}"
+                                alt="horse image" style='max-height:12em; object-fit: contain;' data-bs-toggle="modal"
+                                name="{{image.name}}" data-bs-target="#staticBackdrop">
+                            <p>{{image.comment}}</p>
+                            <!-- Delete Button -->
+                            
+                            <form action="{% url 'delete-image' %}" method="post">
+                                {% csrf_token %}
+                                <input name='name' type='hidden' value={{image.name}}>
+                                <input name='horse' type='hidden' value={{horse.id}}>
+                                <input type='submit' value='Delete'>
+                            </form>                
+                        </div>
+                        {%endif%}
                     {%endif%}
-
-
+                   
+                    {%endfor%}
                 </div>
-                {%endfor%}
-            </div>
-        </section>
 
-    </div>
+                   
+           
+            </section>                
+        
+        
 
-    <!-- Growth Chart -->
+        <!-- Growth Chart -->
 
-    <div id="growth-chart" class="row d-none  justify-content-center align-items-center text-center mb-3">
-        <h2>Growth Charts</h2>
-        <canvas id="myChart" class='mx-2' width="200" height="150"
-            style="border: 1px solid black; max-height: 500px; max-width: 500px;"></canvas>
-        <canvas id="myHeightChart" class='mx-2' width="200" height="150"
-            style="border: 1px solid black; max-height: 500px; max-width: 500px;"></canvas>
+        <div id="growth-chart" class="row d-none  justify-content-center align-items-center text-center mb-3">
+            <h2>Growth Charts</h2>
+            <canvas id="myChart" class='mx-2' width="200" height="150"
+                style="border: 1px solid black; max-height: 500px; max-width: 500px;"></canvas>
+            <canvas id="myHeightChart" class='mx-2' width="200" height="150"
+                style="border: 1px solid black; max-height: 500px; max-width: 500px;"></canvas>
+        </div>
     </div>
 
 
@@ -215,8 +238,9 @@
     const request_btn = $("#request_btn")
     let images = $(".gallery-image")
     let modal_image = $("#modal-img")
+    const img_url = "http://res.cloudinary.com/dmobley0608/image/upload/rockin-j-ranch/{{horse.name}}/"
     images.on("click", function (event) {
-        modal_image.attr("src", event.target.src)
+        modal_image.attr("src", (img_url + event.target.name))
     })
 
     request_btn.on('click', function (event) {
@@ -242,7 +266,7 @@
                     dates.push((record.date))
                 }
             })
-            if (dates.length >= 2) {               
+            if (dates.length >= 2) {
                 $("#growth-chart").removeClass("d-none").addClass("d-flex")
             }
             /*Chart */

@@ -25,6 +25,8 @@ def horse(request, name, pk):
     images = Image.objects.filter(horse=selected_horse)   
     if len(images) > 0:
         profile_image = random.choice(images)
+        while profile_image.private_image:
+            profile_image = random.choice(images)
     else:
         profile_image = ""    
     if selected_horse.girth and selected_horse.length:
@@ -46,13 +48,13 @@ def horse(request, name, pk):
 def add_image(request):   
     if request.method == "POST":  
         try:          
-            current_horse = Horse.objects.get(id=request.POST['horse']) 
-            print(current_horse.name)
+            current_horse = Horse.objects.get(id=request.POST['horse'])                       
             image = cloudinary.uploader.upload(request.FILES['image'], public_id=f"rockin-j-ranch/{current_horse.name}/{id(request.FILES['image'])}")         
-            new_image = Image(comment=request.POST['comment'],horse=current_horse, url=image["url"], name=image['public_id'])        
+            new_image = Image(comment=request.POST['comment'],horse=current_horse, url=image["url"], name=id(request.FILES['image']))        
             new_image.save()
-        except:
-          messages.warning(request, 'Error Uploading Image')
+        except Exception as e:
+          print(e)
+          messages.warning(request, e)
     return redirect(horse, name=current_horse.name, pk=current_horse.id)
 
 #delete image

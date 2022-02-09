@@ -1,4 +1,5 @@
 import uuid
+from xmlrpc.client import Boolean
 from django.db import models
 from django.db.models.deletion import CASCADE
 
@@ -78,6 +79,7 @@ class Image(models.Model):
     comment = models.CharField(max_length=300, null=True, blank=True)
     name = models.CharField(max_length=300)
     horse = models.ForeignKey(Horse, on_delete=CASCADE, null=True)
+    private_image = models.BooleanField(default=False, null=True, blank=True)
 
     def __str__(self):
         return self.url
