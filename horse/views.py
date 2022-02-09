@@ -45,10 +45,10 @@ def horse(request, name, pk):
 #add image
 def add_image(request):   
     if request.method == "POST":  
-        try:  
-            print("creating image")   
-            image = cloudinary.uploader.upload(request.FILES['image'])         
-            current_horse = Horse.objects.get(id=request.POST['horse'])
+        try:          
+            current_horse = Horse.objects.get(id=request.POST['horse']) 
+            print(current_horse.name)
+            image = cloudinary.uploader.upload(request.FILES['image'], public_id=f"rockin-j-ranch/{current_horse.name}/{id(request.FILES['image'])}")         
             new_image = Image(comment=request.POST['comment'],horse=current_horse, url=image["url"], name=image['public_id'])        
             new_image.save()
         except:

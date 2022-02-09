@@ -101,7 +101,7 @@
         <div class='container col-xl-12 col-md-6'>
             {%if images %}
             <img class='img-thumbnail'
-                src='http://res.cloudinary.com/dmobley0608/image/upload/w_500,h_300,c_limit/{{profile_image.name}}'
+                src='http://res.cloudinary.com/dmobley0608/image/upload/w_500,h_300,c_limit/rockin-j-ranch/{{horse.name}}/{{profile_image.name}}'
                 alt="horse.img">
             {%endif%}
 
@@ -194,8 +194,7 @@
 
     <!-- Growth Chart -->
 
-    <div id="growth-chart" class="row d-flex  justify-content-center align-items-center text-center mb-3"
-        style="display:none;">
+    <div id="growth-chart" class="row d-none  justify-content-center align-items-center text-center mb-3">
         <h2>Growth Charts</h2>
         <canvas id="myChart" class='mx-2' width="200" height="150"
             style="border: 1px solid black; max-height: 500px; max-width: 500px;"></canvas>
@@ -243,8 +242,8 @@
                     dates.push((record.date))
                 }
             })
-            if (dates.length > 1) {
-                $("#growth-chart").css("display", "block")
+            if (dates.length >= 2) {               
+                $("#growth-chart").removeClass("d-none").addClass("d-flex")
             }
             /*Chart */
             let ctx = document.getElementById('myChart').getContext('2d');
