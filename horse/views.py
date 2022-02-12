@@ -22,6 +22,14 @@ cloudinary.config(
 #horse load page
 def horse(request, name, pk):   
     selected_horse = Horse.objects.get(id=pk)
+    selected_horse.age = date.today().year - selected_horse.year_foaled
+    try:      
+        recent_weight = Medical.objects.filter(horse=selected_horse, girth__isnull=False).latest() 
+        selected_horse.weight = Medical.get_weight(recent_weight.red_tape, recent_weight.black_tape, recent_weight.girth, recent_weight.length)
+        selected_horse.height = recent_weight.height
+    except:
+        pass
+    #Get images and set Profile Picture 
     images = Image.objects.filter(horse=selected_horse)   
     if len(images) > 0:
         profile_image = random.choice(images)
@@ -29,18 +37,8 @@ def horse(request, name, pk):
             profile_image = random.choice(images)
     else:
         profile_image = ""    
-    if selected_horse.girth and selected_horse.length:
-        selected_horse.weight = round(((selected_horse.girth**2 ) * selected_horse.length)/300)
-    elif Medical.objects.filter(horse=selected_horse):
-        new_weight = 0
-        weight_date=0
-        for record in Medical.objects.filter(horse=selected_horse):            
-            if record.weight:
-               new_weight = record.weight
-               weight_date = record.date
-               if weight_date >= record.date:
-                   selected_horse.weight = new_weight
-    selected_horse.age = date.today().year - selected_horse.year_foaled    
+   
+    
     context = {'horse': selected_horse, 'images':images, 'profile_image': profile_image}
     return render(request, 'horse/horse.html', context)
 

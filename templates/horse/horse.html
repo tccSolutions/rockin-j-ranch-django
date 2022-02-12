@@ -110,8 +110,12 @@
             <h6>Breed: {{horse.breed}}</h6>
             <h6>Age: {{horse.age}}</h6>
             <h6>Sex: {{horse.sex}}</h6>
+            {%if horse.height%}
             <h6>Hands: {{horse.height}}</h6>
+            {%endif%}
+            {%if horse.weight%}
             <h6>Approx Weight: {{horse.weight}}lbs</h6>
+            {%endif%}
             {% if horse.adoptable == True%}
             <h6>Price: ${{horse.price}}0</h6>
             <button class='btn btn-secondary mb-3' data-bs-toggle="modal" data-bs-target="#formstaticBackdrop">Request
@@ -250,7 +254,7 @@
     /* Growth Chart */
 
 
-    let medicalInfo = []
+    let medicalInfo = []    
     let height = []
     let weight = [0]
     let dates = ["0"]
@@ -260,10 +264,13 @@
         success: function (response) {
             medicalInfo = response
             medicalInfo.map((record) => {
-                if (record.height > 0 && record.weight > 0) {
-                    height.push(record.height)
-                    weight.push(record.weight)
+                if (record.height > 0 && record.girth > 0) {
+                    height.push(record.height)                   
                     dates.push((record.date))
+                    glWeight = ((record.girth * record.girth) * record.length) / 300
+                    avgWeight = (glWeight + record.red_tape + record.black_tape) / 3
+                    weight.push(avgWeight)
+                   
                 }
             })
             if (dates.length >= 2) {

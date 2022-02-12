@@ -37,10 +37,7 @@ class Horse(models.Model):
     year_foaled = models.IntegerField(null=True, blank=True)
     adoptable = models.BooleanField()
     trainer = models.ForeignKey(Trainer, on_delete=CASCADE)
-    price = models.FloatField(null=True, blank=True)
-    height = models.FloatField(null=True, blank=True)
-    girth = models.FloatField(null=True, blank=True)
-    length = models.FloatField(null=True, blank=True)
+    price = models.FloatField(null=True, blank=True)    
 
     def __str__(self):
         return self.name
@@ -49,13 +46,27 @@ class Horse(models.Model):
 class Medical(models.Model):
     name = models.CharField(max_length=200)
     date = models.DateField(null=True, blank=True)
-    height = models.FloatField(null=True, blank=True)
-    weight = models.IntegerField(null=True, blank=True)
+    height = models.FloatField(null=True, blank=True)    
     exam_notes = models.TextField(null=True, blank=True)
     vet = models.CharField(max_length=500, null=True, blank=True)
     wormed = models.BooleanField(default=False)
     coggins = models.BooleanField(default=False)
     horse = models.ForeignKey(Horse, on_delete=CASCADE)
+    girth = models.FloatField(null=True, blank=True)
+    length = models.FloatField(null=True, blank=True)
+    red_tape = models.FloatField(null=True, blank=True)
+    black_tape = models.FloatField(null=True, blank=True)
+
+    class Meta:
+        get_latest_by = 'date'
+    
+
+    def get_weight(red, black, girth, length):
+        if red != None and black!= None and girth != None and length != None:
+            gl_weight = round(((girth**2 ) * length)/300)
+            return round((gl_weight + red + black)/3)
+        else:
+            return None
 
     def medical_encoder(medical):
         return {
