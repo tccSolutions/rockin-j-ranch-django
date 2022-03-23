@@ -82,7 +82,7 @@ class Medical(models.Model):
         }
 
     def __str__(self):
-        return self.name
+        return f"{self.horse.name}-{self.name}-{self.date.strftime('%d %B, %Y')}"
 
 
 class Image(models.Model):
@@ -93,7 +93,7 @@ class Image(models.Model):
     private_image = models.BooleanField(default=False, null=True, blank=True)
 
     def __str__(self):
-        return self.url
+        return f"{self.comment}-{self.url}"
 
 
 class Note(models.Model):

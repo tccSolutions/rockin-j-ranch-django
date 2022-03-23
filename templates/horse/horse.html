@@ -262,11 +262,16 @@
         success: function (response) {
             medicalInfo = response
             medicalInfo.map((record) => {
-                if (record.height > 0 && record.girth > 0) {
+                if (record.height > 0) {
                     height.push(record.height)                   
                     dates.push((record.date))
-                    glWeight = ((record.girth * record.girth) * record.length) / 300
-                    avgWeight = (glWeight + record.red_tape + record.black_tape) / 3
+                    if(record.girth > 0){
+                        glWeight = ((record.girth * record.girth) * record.length) / 300
+                        avgWeight = (glWeight + record.red_tape + record.black_tape) / 3
+                    }else{
+                        avgWeight = (record.red_tape + record.black_tape) /2
+                    }
+                   
                     weight.push(avgWeight)
                    
                 }
