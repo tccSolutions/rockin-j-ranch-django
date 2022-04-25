@@ -12,8 +12,7 @@ def barn(request):
     for horse in horses:       
         horse_images = Image.objects.filter(Q(horse=horse) & Q(private_image=False))
        
-        for image in horse_images:
-            print(image.private_image)
+         
         horse.age = date.today().year - horse.year_foaled
         try:
             horse.height = Medical.objects.filter(height__isnull=False, horse=horse).latest().height

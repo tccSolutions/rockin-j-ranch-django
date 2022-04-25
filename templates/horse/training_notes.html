@@ -52,7 +52,7 @@
         {%endif%}
         {%if horse.image%}
         <div class='mb-3'>
-            <img class='rounded' src={{horse.image}} alt="sorry no image" width='300px'>
+            <img class='rounded' src="{{horse.image.url}}" alt="sorry no image" width='300px'>
         </div>
         {%endif%}
         {%if user.is_authenticated%}
@@ -67,7 +67,7 @@
 
     {% for note in training_notes %}
     <div class='row justify-content-center mb-3'>
-        <div class='w-75 border-bottom border-4 border-dark'>
+        <div class='w-75 border-bottom border-2 border-dark'>
             <div class='d-flex align-items-center mb-2'>
                 <h6>{{note.date}}</h6>
                 {%if user.is_authenticated%}

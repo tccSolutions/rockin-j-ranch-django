@@ -69,9 +69,10 @@ class Medical(models.Model):
             return None
 
     def medical_encoder(medical):
+        date = medical.date.strftime('%B %d,%Y')
         return {
             "name": medical.name,
-            "date": str(medical.date),
+            "date":date,
             "height": medical.height,
             "weight": medical.weight,
             "exam_notes": medical.exam_notes,

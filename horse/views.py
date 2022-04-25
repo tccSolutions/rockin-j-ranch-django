@@ -89,8 +89,10 @@ def notes(request, pk):
 
 #Get Horse Medical Data
 def get_medical(request, pk):
-    horse = Horse.objects.get(id=pk)  
-    medical_records = Medical.objects.filter(horse=horse).values()     
+    horse = Horse.objects.get(id=pk)      
+    medical_records = Medical.objects.filter(horse=horse).order_by('date').values()
+    for record in medical_records:
+        record['date'] = record['date'].strftime('%b, %d, %Y')     
     return JsonResponse(list(medical_records), safe=False)
 
 #Request info on Horse
