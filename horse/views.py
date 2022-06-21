@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 from datetime import date, datetime
+from .mustang_brand import get_brand_images
 
 cloudinary.config( 
   cloud_name = os.getenv("CLOUDINARY_NAME"), 
@@ -36,10 +37,19 @@ def horse(request, name, pk):
         while profile_image.private_image:
             profile_image = random.choice(images)
     else:
-        profile_image = ""    
-   
+        profile_image = ""
+    # Brand Images
+    brand = selected_horse.brand
+    year_of_birth_images = []
+    brand_images = []  
+    if selected_horse.breed == "American Mustang":
+        for number in brand[:2]:
+            year_of_birth_images.append(get_brand_images(number))
+        for number in brand[2:]:
+            brand_images.append(get_brand_images(number))
+
     
-    context = {'horse': selected_horse, 'images':images, 'profile_image': profile_image}
+    context = {'horse': selected_horse, 'images':images, 'profile_image': profile_image, 'birth_year_images':year_of_birth_images, 'brand_images':brand_images}
     return render(request, 'horse/horse.html', context)
 
 #add image

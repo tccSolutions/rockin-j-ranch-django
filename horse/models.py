@@ -30,6 +30,8 @@ class Horse(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=200)
     breed = models.CharField(max_length=200)
+    branded = models.BooleanField(default=False)
+    brand= models.CharField(max_length=8)
     bio = models.TextField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     training = models.ManyToManyField(Training)

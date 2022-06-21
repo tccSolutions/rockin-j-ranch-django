@@ -1,3 +1,4 @@
+
 {% extends 'main.html'%}
 {% load static %}
 {% block title %} {{horse.name}} @ {%endblock%}
@@ -105,7 +106,7 @@
                 alt="horse.img">
             {%endif%}
 
-            <h4>{{horse.name}}</h4>
+            <h4>{{horse.name}}</h4>            
             <h6>Primary Trainer: {{horse.trainer}}</h6>
             <h6>Breed: {{horse.breed}}</h6>
             <h6>Age: {{horse.age}}</h6>
@@ -130,6 +131,24 @@
     </section>
 
     <div class='container col-xl-9  align-items-center justify-content-center'>
+        {%if horse.breed == "American Mustang" and horse.branded%}
+        <!-- BLM BRAND -->
+        <div class="d-flex justify-content-center align-items-bottom w-100">
+            <div class="me-1">
+                <img src="\static\images\brand_symbols\US.png" alt="Uh-Oh" width="100em">
+            </div>
+            <div class="d-flex flex-column justify-content-start me-1 ">
+                {%for image in birth_year_images%}
+                <img class="mb-1" src={{image}} alt="Uh-Oh" width="50em" height="50em">
+                {%endfor%}
+            </div>
+            {%for image in brand_images%}
+            <div class="d-flex justify-content-center align-items-center border-bottom border-dark border-5 p-0 ">
+                <img class="me-1" src={{image}} alt="Uh-Oh" width="55em" height="55em">
+            </div>
+            {%endfor%}           
+        </div>
+        {%endif%}
         <!-- About -->
         <section class="row text-center my-5 justify-content-center">
             <div class='col-lg-6'>
